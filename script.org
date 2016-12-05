@@ -8,7 +8,7 @@ Find this script at
 
 Most (if not all) of what I will be showing today was implemented by
 Johannes Rainer and Laurent Gatto during summer 2016 and was released
-in October 2016 in =[[http://bioconductor.org/packages/release/bioc/html/MSnbase.html][MSnbase]]= version 2.0.
+in October 2016 in [[http://bioconductor.org/packages/release/bioc/html/MSnbase.html][MSnbase]] version 2.0.
 
 * The =MSnExp= class
 
