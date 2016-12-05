@@ -23,7 +23,7 @@ back-end and benchmark the in-memory and on-disk implementations.
 
 ### Talk material
 
-Will come here.
+Talk [script](https://github.com/lgatto/EuroBioc2016-Basel-MSnbase2/blob/master/script.org).
 
 
 All the material is available under a [Creative Commons
