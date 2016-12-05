@@ -46,45 +46,49 @@ enables a new *on-disk* version of the =MSnExp= class, called
 
 #+BEGIN_SRC R :session *R*
   setMSnbaseVerbose(FALSE)
-  (f <- msdata::proteomics(full.names = TRUE)[1])
+  basename(f <- msdata::proteomics(full.names = TRUE)[1])
   cnt <- c(FALSE, TRUE, FALSE)
   cat("On disk\n")
-  on <- readMSData2(f[1], centroided = cnt)
-  cat("In memory\n")
-  im <- readMSData(f[1], centroided = cnt)
+  on <- readMSData2(f[1], centroided = cnt) ## on disk
+  cat("In memory")
+  im <- readMSData(f[1], centroided = cnt)  ## in memory
 #+END_SRC
+
+#+RESULTS:
 
 Both have the same consistent API.
 
 See the MSnbase [[http://bioconductor.org/packages/devel/bioc/vignettes/MSnbase/inst/doc/benchmarking.html][benchmarking]] vignette
+
 1. reading data
 2. object size
 3. accessing spectra
 4. subsetting expriments
-(5. quantitation)
+5. quantitation
 
 * A bit more about the implementation
 
 ** Feature data
 
-#+BEGIN_SRC R :session *R*
+**** What we have
+
+#+BEGIN_SRC R :session *R* :results 
 fvarLabels(im)
 #+END_SRC
 
-
-#+BEGIN_SRC R :session *R*
+#+BEGIN_SRC R :session *R* :results none
 fvarLabels(on)
 #+END_SRC
 
+**** And how we use it
+
 These are used is the filtering functions whenever possible.
 
-#+BEGIN_SRC R :session *R*
+#+BEGIN_SRC R :session *R* :results none
   length(on)
+  table(msLevel(on))
   length(filterMsLevel(on, 3L))
 #+END_SRC
-
-#+RESULTS:
-: 270
 
 ** Processing queue
 
@@ -97,6 +101,7 @@ Whenever possible, access to data is delayed.
       filterMz(c(126, 132))
   on2
 
+  setMSnbaseVerbose(TRUE)
   plot(on[["X009.1"]], full = TRUE)
   plot(on2[["X009.1"]], full = TRUE)
 #+END_SRC
@@ -125,7 +130,7 @@ checks their validity (in addition to calling =validObject=).
 
 ** Serialisation
 
-Yes for in-memory, not for on-disk. But the latter can be coerced with
+Yes for in-memory, no for on-disk. But the latter can be coerced with
 =as(on2, "MSnExp")=.
 
 * More new features:
@@ -151,7 +156,12 @@ grep("^filter", ls("package:MSnbase"), value = TRUE)
 * Conclusion
 
 - =MSnExp= were focused with providing convenient access to raw and
-  meta-data. =OnDiskMSnExp= not focus on speed and efficiency.
+  meta-data. =OnDiskMSnExp= focus on speed and efficiency.
 
-- This will lead to more common infrastructure between proteomics and
-  metabolomics (=xcms3= will be using =OnDiskMSnExp= objects).
+- Currently both co-exists, with identical (similar) APIs
+
+- This will lead to more common infrastructure/collaboration between
+  proteomics and metabolomics (=xcms3= will be using =OnDiskMSnExp=
+  objects).
+
+*Thank you for your attention!*
