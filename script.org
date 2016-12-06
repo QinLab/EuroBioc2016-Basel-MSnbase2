@@ -59,6 +59,9 @@ enables a new *on-disk* version of the =MSnExp= class, called
 
 #+BEGIN_SRC R :session *R* :results none
 on
+#+END_SRC
+
+#+BEGIN_SRC R :session *R* :results none
 im
 #+END_SRC
 
