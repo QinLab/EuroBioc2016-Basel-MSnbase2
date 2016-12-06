@@ -187,3 +187,4 @@ grep("^filter", ls("package:MSnbase"), value = TRUE)
 - Funding: [[http://www.bbsrc.ac.uk/][Biotechnology and Biological Sciences Research Council]]
 
      *Thank you for your attention!*
+
