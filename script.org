@@ -157,7 +157,7 @@ table(msLevel(on))
 - Heavy disk access lead to unconvering (and fixing) a few bugs in
   =mzR=!
 
-- Consistent filtering functions
+- Consistent filtering functions, convenient with piping.
 
 #+BEGIN_SRC R :session *R*
 grep("^filter", ls("package:MSnbase"), value = TRUE)
