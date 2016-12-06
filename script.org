@@ -4,6 +4,7 @@
 * Introduction
 
 Find this script at 
+
   https://github.com/lgatto/EuroBioc2016-Basel-MSnbase2
 
 Most (if not all) of what I will be showing today was implemented by
@@ -12,22 +13,25 @@ in October 2016 in [[http://bioconductor.org/packages/release/bioc/html/MSnbase.
 
 * The =MSnExp= class
 
-An =MSnExp= is a mean to store raw data (i.e. spectra) from 1 or more
-mass spectrometry acquisitions. It looks like this:
+An =MSnExp= is a mean to store raw data (i.e. spectra) and metadata
+from 1 or more mass spectrometry (MS) acquisitions. It looks like
+this:
 
-#+BEGIN_SRC R :session *R*
+#+BEGIN_SRC R :session *R* :results none
   suppressPackageStartupMessages(library("MSnbase"))
   getClass("MSnExp")
 #+END_SRC
 
-The original *in-memory* implementation imported all spectra as
-=Spectrum1= (or =Spectrum2=) in the =assayData= environment, with the
-obvious effect of consuming quite a bit of memory.
+(See =?MSnExp= and the [[http://bioconductor.org/packages/release/bioc/vignettes/MSnbase/inst/doc/MSnbase-development.pdf][MSnbase development]] vignette for details.)
 
-*** Example
-On a server with 128 Gb RAM, loading all MS2 spectra from 14 LC-MSMS
-acquistions (4.9 Gb on disk) took 90 minutes and resulted in a 3.3 Gb
-raw data object. That's a reasonable data set from 4 years ago.
+The original *in-memory* implementation imported all spectra as
+=Spectrum1= (or =Spectrum2=) objects in the =assayData= environment,
+with the obvious effect of consuming quite a bit of memory.
+
+*Example*: On a server with 128 Gb RAM, loading all MS2 spectra from
+14 LC-MSMS acquistions (4.9 Gb on disk) took 90 minutes and resulted
+in a 3.3 Gb raw data object. That's a reasonable data set from 4 years
+ago.
 
 * Keeping data on disk
 
@@ -36,27 +40,24 @@ of the raw XML-based data files (=mzML=, =mzXML=, ...). This is what
 enables a new *on-disk* version of the =MSnExp= class, called
 =OnDiskMSnExp= (which extends =MSnExp=).
 
-#+BEGIN_SRC R :session *R*
+#+BEGIN_SRC R :session *R* :results none
   getClass("OnDiskMSnExp")
 #+END_SRC
 
-#+RESULTS:
+(See =?OnDiskMSnExp= and the [[http://bioconductor.org/packages/release/bioc/vignettes/MSnbase/inst/doc/MSnbase-development.pdf][MSnbase development]] vignette for details.)
 
 * Demo and benchmarking
 
-#+BEGIN_SRC R :session *R*
+#+BEGIN_SRC R :session *R* :results none
   setMSnbaseVerbose(FALSE)
   basename(f <- msdata::proteomics(full.names = TRUE)[1])
-  cnt <- c(FALSE, TRUE, FALSE)
   cat("On disk\n")
-  on <- readMSData2(f[1], centroided = cnt) ## on disk
-  cat("In memory")
-  im <- readMSData(f[1], centroided = cnt)  ## in memory
+  on <- readMSData2(f[1]) ## on disk
+  cat("In memory\n")
+  im <- readMSData(f[1])  ## in memory
 #+END_SRC
 
-#+RESULTS:
-
-Both have the same consistent API.
+Both have the same API (so far at least).
 
 See the MSnbase [[http://bioconductor.org/packages/devel/bioc/vignettes/MSnbase/inst/doc/benchmarking.html][benchmarking]] vignette
 
@@ -167,6 +168,6 @@ grep("^filter", ls("package:MSnbase"), value = TRUE)
 * Acknowledgements
 
 - [[http://lgatto.github.io/msnbase-contribs/][MSnbase contributors]], in particular Sebastian Gibb
-- Funders: Biotechnology and Biological Sciences Research Council
+- Funding: [[http://www.bbsrc.ac.uk/][Biotechnology and Biological Sciences Research Council]]
 
      *Thank you for your attention!*
