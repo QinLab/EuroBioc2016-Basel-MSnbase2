@@ -164,4 +164,9 @@ grep("^filter", ls("package:MSnbase"), value = TRUE)
   proteomics and metabolomics (=xcms3= will be using =OnDiskMSnExp=
   objects).
 
-*Thank you for your attention!*
+* Acknowledgements
+
+- [[http://lgatto.github.io/msnbase-contribs/][MSnbase contributors]], in particular Sebastian Gibb
+- Funders: Biotechnology and Biological Sciences Research Council
+
+     *Thank you for your attention!*
