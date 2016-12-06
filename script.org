@@ -57,6 +57,11 @@ enables a new *on-disk* version of the =MSnExp= class, called
   im <- readMSData(f[1])  ## in memory
 #+END_SRC
 
+#+BEGIN_SRC R :session *R* :results none
+on
+im
+#+END_SRC
+
 Both have the same API (so far at least).
 
 See the MSnbase [[http://bioconductor.org/packages/devel/bioc/vignettes/MSnbase/inst/doc/benchmarking.html][benchmarking]] vignette
@@ -65,7 +70,7 @@ See the MSnbase [[http://bioconductor.org/packages/devel/bioc/vignettes/MSnbase/
 2. object size
 3. accessing spectra
 4. subsetting expriments
-5. quantitation
+5. (quantitation)
 
 * A bit more about the implementation
 
@@ -73,7 +78,7 @@ See the MSnbase [[http://bioconductor.org/packages/devel/bioc/vignettes/MSnbase/
 
 **** What we have
 
-#+BEGIN_SRC R :session *R* :results 
+#+BEGIN_SRC R :session *R* :results none
 fvarLabels(im)
 #+END_SRC
 
@@ -103,8 +108,8 @@ Whenever possible, access to data is delayed.
   on2
 
   setMSnbaseVerbose(TRUE)
-  plot(on[["X009.1"]], full = TRUE)
-  plot(on2[["X009.1"]], full = TRUE)
+  plot(on[["X009.1"]], full = TRUE, centroided = FALSE)
+  plot(on2[["X009.1"]], full = TRUE, centroided = FALSE)
 #+END_SRC
 
 ** Parallelisation
@@ -115,7 +120,7 @@ Systematic use of =BiocParallel=.
 
 On-the-fly construction of spectra is done using C-level
 constuctors. This is much faster, mostly due to bypassing method
-dispatching and the validity check!
+dispatching and the validity check.
 
 ** Validity
 
@@ -124,21 +129,32 @@ The default =validObject= doesn't verify the validity on the spectra
 =validateOnDiskMSnExp= function that instantiates all spectra and
 checks their validity (in addition to calling =validObject=).
 
-#+BEGIN_SRC R :session *R*
+#+BEGIN_SRC R :session *R* :results none
   validObject(on)
   validateOnDiskMSnExp(on)
 #+END_SRC
 
 ** Serialisation
 
-Yes for in-memory, no for on-disk. But the latter can be coerced with
-=as(on2, "MSnExp")=.
+- Yes for in-memory, no for on-disk. 
+- But on-disk can be coerced to in-memory with =as(on2, "MSnExp")=.
 
 * More new features:
 - Can store any combination of MS levels (in-memory =MSnExp= can only
   cope with a single level at a time.)
+
+#+BEGIN_SRC R :session *R*
+table(msLevel(on))
+#+END_SRC
+
+#+RESULTS:
+| 1 |  25 |
+| 2 | 270 |
+| 3 | 270 |
+
 - Heavy disk access lead to unconvering (and fixing) a few bugs in
   =mzR=!
+
 - Consistent filtering functions
 
 #+BEGIN_SRC R :session *R*
