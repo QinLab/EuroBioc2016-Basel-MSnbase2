@@ -98,7 +98,8 @@ These are used is the filtering functions whenever possible.
 
 ** Processing queue
 
-Whenever possible, access to data is delayed. 
+Whenever possible, access/processing to/of data is delayed (/lazy/
+processing).
 
 #+BEGIN_SRC R :session *R*
   library("magrittr")
@@ -136,7 +137,8 @@ checks their validity (in addition to calling =validObject=).
 
 ** Serialisation
 
-- Yes for in-memory, no for on-disk. 
+- Yes for in-memory, no for on-disk (can't guarantee that the raw
+  files will stay).
 - But on-disk can be coerced to in-memory with =as(on2, "MSnExp")=.
 
 * More new features:
